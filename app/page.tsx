@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 'use client'
 
 import { useState, useEffect, Fragment } from 'react'
-import { subscribeUser, unsubscribeUser, sendNotification } from './actions'
+import { subscribeUser, unsubscribeUser, sendNotification } from '@/app/actions'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -99,11 +101,13 @@ function InstallPrompt() {
   const [isStandalone, setIsStandalone] = useState(false)
  
   useEffect(() => {
-    setIsIOS(
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
-    )
- 
-    setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
+    if (typeof window !== 'undefined') {
+      setIsIOS(
+        /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
+      )
+      
+      setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
+    }
   }, [])
  
   if (isStandalone) {
